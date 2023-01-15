@@ -30,5 +30,19 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'spotify' => [
+        'client_id' => env('SPOTIFY_CLIENT_ID'),
+        'client_secret' => env('SPOTIFY_CLIENT_SECRET'),
+        'redirect' => env('SPOTIFY_REDIRECT_URI'),
+        'scopes' => [ 
+            //https://developer.spotify.com/documentation/general/guides/authorization/scopes/
+            'playlist-read-private',
+            'playlist-modify-private',
+            'user-read-email',
+            'user-read-recently-played',
+            'user-library-read'
+        ]
+      ],
+
 
 ];

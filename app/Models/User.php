@@ -20,7 +20,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'spotify_id',
+        'spotify_token',
+        'spotify_refresh_token'
     ];
 
     /**
@@ -31,6 +33,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'spotify_token',
+        'spotify_refresh_token'
     ];
 
     /**
@@ -39,6 +43,12 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
     ];
+    
+    public function songs()
+    {
+        return $this->belongsToMany(Song::class)->withPivot([
+            "added_at", "last_played_at"
+        ]);
+    }
 }

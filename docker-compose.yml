@@ -42,9 +42,23 @@ services:
             test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
             retries: 3
             timeout: 5s
+    pgadmin:
+        image: 'dpage/pgadmin4:latest'
+        ports:
+            - '${PGADMIN_LISTEN_PORT:-5431}:5431'
+        volumes:
+            - sail-pgadmin:/var/lib/pgadmin
+        environment:
+            PGADMIN_DEFAULT_EMAIL: '${PGADMIN_DEFAULT_EMAIL:-admin@fiopsty.com}'
+            PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_DEFAULT_PASSWORD:-password}'
+            PGADMIN_LISTEN_PORT: '${PGADMIN_LISTEN_PORT:-5431}'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
 volumes:
     sail-pgsql:
+        driver: local
+    sail-pgadmin:
         driver: local

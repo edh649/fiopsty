@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('songs', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('email')->nullable();
-            $table->bigInteger('spotify_id')->unique();
-            $table->string('spotify_token');
-            $table->string('spotify_refresh_token');
-            $table->rememberToken();
+            $table->string('spotify_id')->unique()->index();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('songs');
     }
 };
