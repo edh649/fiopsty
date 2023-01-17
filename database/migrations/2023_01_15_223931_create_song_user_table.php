@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('song_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->dateTime('added_at')->index();
-            $table->dateTime('last_played_at')->nullable();
+            $table->dateTime('added_at')->index()->nullable();
+            $table->dateTime('last_played_at')->index()->nullable();
+            $table->timestamps();
         });
     }
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class SpotifyLibraryController extends Controller
 {
-    public function dispatchImport()
+    public function dispatchImportSavedSongs()
     {
         //temp no job
         $importSavedSongs = new SavedSongsImporter(Auth::user(), 50, 0);

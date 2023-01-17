@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class Song extends Authenticatable
+class Song extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -16,10 +16,8 @@ class Song extends Authenticatable
         'name'
     ];
     
-    public function users()
+    public function songUsers()
     {
-        return $this->belongsToMany(User::class)->withPivot([
-            "added_at", "last_played_at"
-        ]);
+        return $this->hasMany(SongUser::class);
     }
 }

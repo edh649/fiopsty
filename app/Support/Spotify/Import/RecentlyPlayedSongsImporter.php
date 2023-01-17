@@ -9,19 +9,17 @@ use Exception;
 use InvalidArgumentException;
 use SpotifyWebAPI\SpotifyWebAPI;
 
-class SavedSongsImporter extends ImporterAbstract
+class RecentlyPlayedSongsImporter extends ImporterAbstract
 {
     protected int $limit;
-    protected int $offset;
     
-    public function __construct(User $user, int $limit, int $offset)
+    public function __construct(User $user, int $limit)
     {
         if (0 > $limit || $limit > 50)
         {
             throw new InvalidArgumentException("Limit only supports 0 to 50 records. {$limit} given.");
         }
         $this->limit = $limit;
-        $this->offset = $offset;
         
         parent::__construct($user);
     }
@@ -36,19 +34,15 @@ class SavedSongsImporter extends ImporterAbstract
         return $this->limit;
     }
     
-    public function getOffset(): int
-    {
-        return $this->offset;
-    }
-    
     public function importAndRecord(SpotifyWebAPI $api): string
     {
-        $response = $api->getMySavedTracks([
-            "limit" => $this->getLimit(),
-            "offset" => $this->getOffset()
+        $response = $api->getMyRecentTracks([
+            "limit" => $this->getLimit()
         ]);
         $songs = $response->items;
         $next = $response->next;
+        
+        dd($response);
         
         $this->saveSongsList($songs);
         return $next;
@@ -64,7 +58,7 @@ class SavedSongsImporter extends ImporterAbstract
             $songUser = SongUser::updateOrCreate([
                 "song_id" => $song->id,
                 "user_id" => $this->user->id
-            ], ["added_at" => $track->added_at]);
+            ], ["last_played_at" => $track->played_at]);
         }
     }
 }

@@ -36,19 +36,16 @@ class User extends Authenticatable
         'spotify_token',
         'spotify_refresh_token'
     ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-    ];
     
     public function songs()
     {
         return $this->belongsToMany(Song::class)->withPivot([
             "added_at", "last_played_at"
         ]);
+    }
+    
+    public function songUsers()
+    {
+        return $this->hasMany(SongUser::class);
     }
 }
