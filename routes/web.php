@@ -23,7 +23,16 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     // dd(\App\Models\SongUser::all()->toArray());
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+Route::get('/listen-all', function () {
+    // dd(\App\Models\SongUser::all()->toArray());
+    return view('listen-all');
+})->middleware(['auth'])->name('listen-all');
+
+Route::get('/randomiser', function () {
+    return view('randomiser');
+})->middleware(['auth'])->name('randomiser');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

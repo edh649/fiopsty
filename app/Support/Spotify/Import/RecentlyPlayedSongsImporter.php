@@ -42,8 +42,6 @@ class RecentlyPlayedSongsImporter extends ImporterAbstract
         $songs = $response->items;
         $next = $response->next;
         
-        dd($response);
-        
         $this->saveSongsList($songs);
         return $next;
     }

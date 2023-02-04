@@ -16,6 +16,18 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+                
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('listen-all')" :active="request()->routeIs('listen-all')">
+                        {{ __('Listen All') }}
+                    </x-nav-link>
+                </div>
+                
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('randomiser')" :active="request()->routeIs('randomiser')">
+                        {{ __('Randomiser') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
