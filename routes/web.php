@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RandomiserController;
 use App\Http\Controllers\Spotify\SpotifyLibraryController;
 use App\Http\Controllers\Spotify\SpotifyPlayerController;
 use Illuminate\Support\Facades\Route;
@@ -30,9 +31,8 @@ Route::get('/listen-all', function () {
     return view('listen-all');
 })->middleware(['auth'])->name('listen-all');
 
-Route::get('/randomiser', function () {
-    return view('randomiser');
-})->middleware(['auth'])->name('randomiser');
+Route::get('/randomiser', [RandomiserController::class, 'index'])->middleware(['auth'])->name('randomiser');
+Route::post('/randomiser', [RandomiserController::class, 'submit'])->middleware(['auth'])->name('randomiser.submit');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

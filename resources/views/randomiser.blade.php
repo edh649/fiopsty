@@ -4,15 +4,17 @@
             {{ __('Randomiser') }}
         </h2>
     </x-slot>
+    
+    <x-alert :alert="$alert"></x-alert>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <form method="post" action="{{ route('spotify.library.dispatch-import.saved-songs') }}" class="mt-6 space-y-6">
+                <form method="post" action="{{ route('randomiser.submit') }}" class="mt-6 space-y-6">
                     @csrf    
                     <div class="flex items-center gap-4">
                         <x-input-label>Length</x-input-label>
-                        <x-text-input input="numeric"/>
+                        <x-text-input name="length" type="number" max="100" min="1" value="50"/>
 
                     </div>
 
