@@ -5,6 +5,7 @@ namespace App\Support\Spotify\Import;
 use App\Models\Song;
 use App\Models\SongUser;
 use App\Models\User;
+use DateTime;
 use Exception;
 use InvalidArgumentException;
 use SpotifyWebAPI\SpotifyWebAPI;
@@ -13,8 +14,9 @@ class SavedSongsImporter extends ImporterAbstract
 {
     protected int $limit;
     protected int $offset;
+    protected ?DateTime $stopAtAddedAtEarlierThan;
     
-    public function __construct(User $user, int $limit, int $offset)
+    public function __construct(User $user, int $limit, int $offset, ?DateTime $stopAtAddedAtEarlierThan = null)
     {
         if (0 > $limit || $limit > 50)
         {
@@ -22,6 +24,7 @@ class SavedSongsImporter extends ImporterAbstract
         }
         $this->limit = $limit;
         $this->offset = $offset;
+        $this->stopAtAddedAtEarlierThan = $stopAtAddedAtEarlierThan;
         
         parent::__construct($user);
     }
@@ -51,6 +54,11 @@ class SavedSongsImporter extends ImporterAbstract
         $next = $response->next;
         
         $this->saveSongsList($songs);
+        
+        if ($songs[0]->added_at < $this->stopAtAddedAtEarlierThan) {
+            //Technically we could take all of them and find the max/min and compare that, but I'm pretty sure it's in the correct order and if we get a bonus page then whatever!
+            return null; //Null represents 'dont carry on'
+        }
         return $next;
     }
     

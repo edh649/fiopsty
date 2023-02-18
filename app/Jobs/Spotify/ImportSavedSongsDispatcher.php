@@ -3,6 +3,7 @@
 namespace App\Jobs\Spotify;
 
 use App\Models\User;
+use DateTime;
 use Illuminate\Bus\Batch;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -17,15 +18,17 @@ class ImportSavedSongsDispatcher implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected User $user;
+    protected ?string $queue;
     
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, ?string $queue = null)
     {
         $this->user = $user;
+        $this->queue = $queue;
     }
 
     /**
@@ -35,6 +38,8 @@ class ImportSavedSongsDispatcher implements ShouldQueue
      */
     public function handle()
     {
-        Bus::batch(new ImportSavedSongs($this->user, 50, 0, true))->dispatch();
+        Bus::batch(new ImportSavedSongs($this->user, 50, 0, true))
+            ->onQueue($this->queue ?? 'default')
+            ->dispatch();
     }
 }

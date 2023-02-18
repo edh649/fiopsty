@@ -4,6 +4,7 @@ namespace App\Jobs\Spotify;
 
 use App\Models\User;
 use App\Support\Spotify\Import\SavedSongsImporter;
+use DateTime;
 use Exception;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -19,6 +20,7 @@ class ImportSavedSongs implements ShouldQueue
 
     protected SavedSongsImporter $importer;
     protected bool $continueImportInBatch;
+    protected ?DateTime $stopAtAddedAtEarlierThan;
     
     /**
      * Create a new job instance.
@@ -30,10 +32,11 @@ class ImportSavedSongs implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, int $limit, int $offset, bool $continueImportInBatch = false, )
+    public function __construct(User $user, int $limit, int $offset, bool $continueImportInBatch = false, ?DateTime $stopAtAddedAtEarlierThan = null)
     {
-        $this->importer = new SavedSongsImporter($user, $limit, $offset);
+        $this->importer = new SavedSongsImporter($user, $limit, $offset, $stopAtAddedAtEarlierThan);
         $this->continueImportInBatch = $continueImportInBatch;
+        $this->stopAtAddedAtEarlierThan = $stopAtAddedAtEarlierThan;
     }
 
     /**
@@ -53,7 +56,9 @@ class ImportSavedSongs implements ShouldQueue
                 user: $this->importer->getUser(), 
                 limit: $this->importer->getLimit(), 
                 offset: $this->importer->getOffset() + $this->importer->getLimit(), 
-                continueImportInBatch: $this->continueImportInBatch));
+                continueImportInBatch: $this->continueImportInBatch,
+                stopAtAddedAtEarlierThan: $this->stopAtAddedAtEarlierThan
+            ));
         }
     }
 }

@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('dispatch:import:recently-played-songs')->everyTwoHours();
+        $schedule->command('dispatch:import:recent-saved-songs')->daily(); //hmmmm
     }
 
     /**
