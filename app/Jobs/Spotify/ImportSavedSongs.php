@@ -30,7 +30,7 @@ class ImportSavedSongs implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $user, int $limit, int $offset, bool $continueImportInBatch = false)
+    public function __construct(User $user, int $limit, int $offset, bool $continueImportInBatch = false, )
     {
         $this->importer = new SavedSongsImporter($user, $limit, $offset);
         $this->continueImportInBatch = $continueImportInBatch;
@@ -43,8 +43,8 @@ class ImportSavedSongs implements ShouldQueue
      */
     public function handle()
     {
-        
-        if ($this->continueImportInBatch)
+        $more = $this->importer->import();
+        if ($more && $this->continueImportInBatch)
         {
             if (!$this->batch()) {
                 throw new Exception("Requested continuing import however job wasn't provided in a batch!");

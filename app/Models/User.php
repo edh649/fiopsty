@@ -22,9 +22,15 @@ class User extends Authenticatable
         'email',
         'spotify_id',
         'spotify_token',
-        'spotify_refresh_token'
+        'spotify_refresh_token',
+        'listen_all_started_at',
+        'spotify_listen_all_playlist_id'
     ];
 
+    protected $casts = [
+        'listen_all_started_at' => 'datetime'
+    ];
+    
     /**
      * The attributes that should be hidden for serialization.
      *

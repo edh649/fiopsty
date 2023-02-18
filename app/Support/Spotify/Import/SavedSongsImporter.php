@@ -41,7 +41,7 @@ class SavedSongsImporter extends ImporterAbstract
         return $this->offset;
     }
     
-    public function importAndRecord(SpotifyWebAPI $api): string
+    public function importAndRecord(SpotifyWebAPI $api): ?string
     {
         $response = $api->getMySavedTracks([
             "limit" => $this->getLimit(),

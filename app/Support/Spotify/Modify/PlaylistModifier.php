@@ -30,4 +30,36 @@ class PlaylistModifier extends SpotifyAbstract
             );
         });
     }
+    
+    public function removeAllTracksFromPlaylist(string $playlist_id)
+    {
+        $this->useApiWithUserTokenRefresh(function (SpotifyWebAPI $api) use ($playlist_id) {
+            $next = true;
+            while ($next)
+            {
+                $resp = $api->getPlaylistTracks($playlist_id, [
+                    "limit" => 50, 
+                    "fields" => "next,items(track(id))",
+                ]);
+                $next = $resp->next;
+                
+                $songs = [];
+                foreach (array_column(array_column($resp->items, 'track'), 'id') as $id)
+                {
+                    $songs[] = ["uri" => $id];
+                }
+                $resp = $api->deletePlaylistTracks($playlist_id, ["tracks" => $songs]);
+            }
+        });
+    }
+    
+    public function getPlaylistName(string $playlist_id)
+    {
+        return $this->useApiWithUserTokenRefresh(function (SpotifyWebAPI $api) use ($playlist_id) {
+            $playlist = $api->getPlaylist($playlist_id, [
+                // "fields" => "name,followers"
+            ]);
+            return $playlist->name;
+        });
+    }
 }

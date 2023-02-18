@@ -42,6 +42,13 @@ services:
             test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
             retries: 3
             timeout: 5s
+    redis:
+        image: redis:4.0
+        container_name: app_redis
+        ports:
+            - "6382:6379"
+        networks:
+            - sail
     pgadmin:
         image: 'dpage/pgadmin4:latest'
         ports:

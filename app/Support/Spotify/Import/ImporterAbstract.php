@@ -16,10 +16,10 @@ abstract class ImporterAbstract extends SpotifyAbstract
     public function import(): bool
     {
         $next = $this->useApiWithUserTokenRefresh(function (SpotifyWebApi $api) {
-            $this->importAndRecord($api);
+            return $this->importAndRecord($api);
         });
         return (bool)$next;
     }
     
-    protected abstract function importAndRecord(SpotifyWebAPI $api): string;
+    protected abstract function importAndRecord(SpotifyWebAPI $api): ?string;
 }

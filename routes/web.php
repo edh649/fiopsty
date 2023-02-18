@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\ListenAllController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RandomiserController;
 use App\Http\Controllers\Spotify\SpotifyLibraryController;
@@ -26,10 +28,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/listen-all', function () {
-    // dd(\App\Models\SongUser::all()->toArray());
-    return view('listen-all');
-})->middleware(['auth'])->name('listen-all');
+Route::get('/listen-all', [ListenAllController::class, 'index'])->middleware(['auth'])->name('listen-all');
+Route::delete('/listen-all', [ListenAllController::class, 'reset'])->middleware(['auth'])->name('listen-all.reset');
+Route::post('/listen-all', [ListenAllController::class, 'generate'])->middleware(['auth'])->name('listen-all.generate-playlist');
 
 Route::get('/randomiser', [RandomiserController::class, 'index'])->middleware(['auth'])->name('randomiser');
 Route::post('/randomiser', [RandomiserController::class, 'submit'])->middleware(['auth'])->name('randomiser.submit');
@@ -40,8 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::post('/spotify/library/dispatch-import/saved-songs', [SpotifyLibraryController::class, 'dispatchImportSavedSongs'])->name('spotify.library.dispatch-import.saved-songs');
-Route::post('/spotify/player/dispatch-import/recently-played', [SpotifyPlayerController::class, 'dispatchImportRecentlyPlayed'])->name('spotify.player.dispatch-import.recently-played');
+Route::get('/library', [LibraryController::class, 'index'])->middleware(['auth'])->name('library');
+Route::post('/spotify/library/import/dispatch/saved-songs', [SpotifyLibraryController::class, 'dispatchImportSavedSongs'])->name('spotify.library.dispatch-import.saved-songs');
+Route::post('/spotify/player/import/recently-played', [SpotifyPlayerController::class, 'importRecentlyPlayed'])->name('spotify.player.import.recently-played');
 
 Route::namespace('Auth')->prefix('auth')->group(function () {
     require __DIR__.'/auth.php';

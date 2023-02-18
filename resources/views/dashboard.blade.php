@@ -1,40 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Home') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <form method="post" action="{{ route('spotify.library.dispatch-import.saved-songs') }}" class="mt-6 space-y-6">
-                    @csrf
-
-                    <div class="flex items-center gap-4">
-                        <x-primary-button>{{ __('Import Spotify Library') }}</x-primary-button>
-
-                    </div>
-                </form>
-                <form method="post" action="{{ route('spotify.player.dispatch-import.recently-played') }}" class="mt-6 space-y-6">
-                    @csrf
-
-                    <div class="flex items-center gap-4">
-                        <x-primary-button>{{ __('Import Spotify Recently Played') }}</x-primary-button>
-
-                    </div>
-                </form>
-            </div>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex">
+            <a href="{{ route('listen-all') }}" class="m-2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Listen All</h5>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Track listening to your whole Spotify Library and make unheard playlists</p>
+            </a>
+            <a href="{{ route('randomiser') }}" class="m-2 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Randomiser</h5>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Make a truly random playlist from your <strong>whole</strong> spotify library</p>
+            </a>
         </div>
     </div>
     
