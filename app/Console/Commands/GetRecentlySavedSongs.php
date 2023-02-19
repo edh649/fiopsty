@@ -2,17 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\Spotify\ImportRecentSavedSongsDispatcher;
+use App\Jobs\Spotify\ImportRecentlySavedSongsDispatcher;
 use Illuminate\Console\Command;
 
-class GetRecentSavedSongs extends Command
+class GetRecentlySavedSongs extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'dispatch:import:recent-saved-songs';
+    protected $signature = 'dispatch:import:recently-saved-songs';
 
     /**
      * The console command description.
@@ -28,7 +28,7 @@ class GetRecentSavedSongs extends Command
      */
     public function handle()
     {
-        $dispatchJob = new ImportRecentSavedSongsDispatcher('low'); //low priority queue
+        $dispatchJob = new ImportRecentlySavedSongsDispatcher('low'); //low priority queue
         $dispatchJob->dispatch();
         return Command::SUCCESS;
     }

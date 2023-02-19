@@ -16,15 +16,15 @@ class ImportRecentlyPlayedSongsDispatcher implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     
-    protected ?string $queue;
+    protected ?string $dispatchOnQueue;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(string $queue = null)
+    public function __construct(string $dispatchOnQueue = null)
     {
-        $this->queue = $queue;
+        $this->dispatchOnQueue = $dispatchOnQueue;
     }
 
     /**
@@ -39,6 +39,6 @@ class ImportRecentlyPlayedSongsDispatcher implements ShouldQueue
         foreach ($users as $user) {
             $jobs[] = new ImportRecentlyPlayedSongs($user);
         }
-        Bus::batch($jobs)->onQueue($this->queue ?? 'default')->dispatch();
+        Bus::batch($jobs)->onQueue($this->dispatchOnQueue ?? 'default')->dispatch();
     }
 }

@@ -18,17 +18,17 @@ class ImportSavedSongsDispatcher implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected User $user;
-    protected ?string $queue;
+    protected ?string $dispatchOnQueue;
     
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, ?string $queue = null)
+    public function __construct(User $user, ?string $dispatchOnQueue = null)
     {
         $this->user = $user;
-        $this->queue = $queue;
+        $this->dispatchOnQueue = $dispatchOnQueue;
     }
 
     /**
@@ -39,7 +39,7 @@ class ImportSavedSongsDispatcher implements ShouldQueue
     public function handle()
     {
         Bus::batch(new ImportSavedSongs($this->user, 50, 0, true))
-            ->onQueue($this->queue ?? 'default')
+            ->onQueue($this->dispatchOnQueue ?? 'default')
             ->dispatch();
     }
 }

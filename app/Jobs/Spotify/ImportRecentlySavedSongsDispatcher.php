@@ -14,20 +14,20 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Bus;
 
-class ImportRecentSavedSongsDispatcher implements ShouldQueue
+class ImportRecentlySavedSongsDispatcher implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected ?string $queue;
+    protected ?string $dispatchOnQueue;
     
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(?string $queue = null)
+    public function __construct(?string $dispatchOnQueue = null)
     {
-        $this->queue = $queue;
+        $this->dispatchOnQueue = $dispatchOnQueue;
     }
 
     /**
@@ -44,7 +44,7 @@ class ImportRecentSavedSongsDispatcher implements ShouldQueue
             $jobs = new ImportSavedSongs($user, 50, 0, true, $latestAddedAt);
         }
         Bus::batch($jobs)
-            ->onQueue($this->queue ?? 'default')
+            ->onQueue($this->dispatchOnQueue ?? 'default')
             ->dispatch();
     }
 }
